@@ -1,7 +1,7 @@
 package org.card.application.repository;
 
 import org.card.application.entity.Card;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CardRepository extends CrudRepository<Card, Long> {
+public interface CardRepository extends JpaRepository<Card, Long> {
 }

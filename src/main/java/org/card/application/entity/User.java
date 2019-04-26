@@ -1,16 +1,20 @@
 package org.card.application.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Data
-public class User {
+@Getter
+@Setter
+public class User implements Serializable {
 
     @Id
     @Column(name = "user_id")
@@ -27,9 +31,18 @@ public class User {
     @Column(name = "user_birthday")
     private LocalDate birthDay;
 
-    @ManyToMany
-    @JoinTable(name = "deck_type",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "deck_id"))
+    @OneToMany
+    @JoinColumn(name = "user_deck_id")
     private List<Deck> decks;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", birthDay=" + birthDay +
+                ", decks=" + decks +
+                '}';
+    }
 }

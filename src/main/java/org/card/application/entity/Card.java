@@ -1,17 +1,14 @@
 package org.card.application.entity;
 
 import lombok.Data;
-import lombok.ToString;
-import org.card.application.entity.cardEnum.CardStatus;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "card")
-@SecondaryTable(name = "card_status")
 @Data
-public class Card {
+public class Card implements Serializable {
 
     @Id
     @Column(name = "card_id")
@@ -31,15 +28,5 @@ public class Card {
     @Column(name = "card_back_voice")
     private String backVoice;
 
-    @Column(name = "card_status", table = "card_status")
-    @Enumerated(EnumType.STRING)
-    private CardStatus cardStatus;
 
-
-//    @ManyToMany
-//    @JoinTable(name = "card_status",
-//            joinColumns = @JoinColumn(name = "card_id"),
-//            inverseJoinColumns = @JoinColumn(name = "user_id"))
-//    @ToString.Exclude
-//    private List<User> users;
 }

@@ -4,21 +4,13 @@ import lombok.Data;
 import org.card.application.entity.cardEnum.DeckType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "deck")
-@SecondaryTable(name = "deck_type")
 @Data
-public class Deck {
-
-    public Deck() {
-    }
-
-    public Deck(String name, DeckType deckType) {
-        this.name = name;
-        this.deckType = deckType;
-    }
+public class Deck implements Serializable {
 
     @Id
     @Column(name = "deck_id")
@@ -28,12 +20,6 @@ public class Deck {
 
     @Column(name = "deck_name")
     private String name;
-
-    @Column(table = "deck_type", name = "deck_type")
-//    @OneToOne
-//    @JoinTable(name = "deck_type", joinColumns = @JoinColumn(name = "deck_type"))
-    @Enumerated(EnumType.STRING)
-    private DeckType deckType;
 
     @OneToMany
     @JoinColumn(name = "card_deck_id")
