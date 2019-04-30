@@ -5,9 +5,11 @@ import org.card.application.repository.DeckRepository;
 import org.card.application.service.BaseService;
 import org.card.application.service.DeckService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class DeckServiceImpl implements BaseService<Deck, Long>, DeckService {
 
     @Autowired

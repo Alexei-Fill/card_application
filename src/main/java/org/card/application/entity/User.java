@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.card.application.entity.cardEnum.UserRole;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,8 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
+@Data
 public class User implements Serializable {
 
     @Id
@@ -31,18 +31,11 @@ public class User implements Serializable {
     @Column(name = "user_birthday")
     private LocalDate birthDay;
 
+    @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     @OneToMany
     @JoinColumn(name = "user_deck_id")
     private List<Deck> decks;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", birthDay=" + birthDay +
-                ", decks=" + decks +
-                '}';
-    }
 }

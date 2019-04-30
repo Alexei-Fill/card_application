@@ -5,9 +5,11 @@ import org.card.application.repository.CardRepository;
 import org.card.application.service.BaseService;
 import org.card.application.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CardServiceImpl implements BaseService<Card, Long>, CardService {
 
     @Autowired

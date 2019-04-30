@@ -23,7 +23,7 @@ public class UserToken implements Serializable {
     @Column(name = "user_token_expiration_time")
     private LocalDate tokenExpirationTime;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 }
