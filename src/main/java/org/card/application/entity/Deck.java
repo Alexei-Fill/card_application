@@ -21,7 +21,7 @@ public class Deck implements Serializable {
     @Column(name = "deck_name")
     private String name;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "card_deck_id")
     private List<Card> cards;
 }

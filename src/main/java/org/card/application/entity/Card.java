@@ -12,7 +12,7 @@ public class Card implements Serializable {
 
     @Id
     @Column(name = "card_id")
-    @SequenceGenerator(name = "card_seq", sequenceName = "card_card_id_seq")
+    @SequenceGenerator(name = "card_seq", sequenceName = "card_card_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "card_seq")
     private long id;
 

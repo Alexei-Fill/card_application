@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/deck")
+@RequestMapping("/ca/deck")
 public class DeckControllerRest {
 
     @Autowired

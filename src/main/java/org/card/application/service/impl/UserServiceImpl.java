@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.card.application.entity.cardEnum.UserRole.ROLE_USER;
+
 @Service
 public class UserServiceImpl implements BaseService<User, Long>, UserService, UserDetailsService {
 
@@ -31,6 +33,7 @@ public class UserServiceImpl implements BaseService<User, Long>, UserService, Us
 
     @Override
     public User save(User entity) {
+        entity.setRole(ROLE_USER);
         return userRepository.save(entity);
     }
 
@@ -45,7 +48,19 @@ public class UserServiceImpl implements BaseService<User, Long>, UserService, Us
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return new UserDetail(userRepository.findUserByLogin(s).get());
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = null;
+        if (username != null && !username.isEmpty()) {
+            user = userRepository.findUserByLogin(username).get();
+        }
+        if (user != null)
+            return new UserDetail(user);
+        else
+            throw  new UsernameNotFoundException("User not found :" + username);
+    }
+
+    @Override
+    public User findUserByLogin(String login) {
+        return userRepository.findUserByLogin(login).get();
     }
 }

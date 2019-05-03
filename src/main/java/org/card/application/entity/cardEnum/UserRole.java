@@ -1,6 +1,6 @@
 package org.card.application.entity.cardEnum;
 
 public enum  UserRole{
-    ADMIN,
-    USER;
+    ROLE_ADMIN,
+    ROLE_USER;
 }

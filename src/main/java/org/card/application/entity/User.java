@@ -18,7 +18,7 @@ public class User implements Serializable {
 
     @Id
     @Column(name = "user_id")
-    @SequenceGenerator(name = "user_seq", sequenceName = "USER_USER_ID_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "USER_USER_ID_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     private long id;
 
@@ -35,7 +35,7 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_deck_id")
     private List<Deck> decks;
 }

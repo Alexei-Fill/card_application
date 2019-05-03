@@ -1,45 +1,65 @@
 package org.card.application.securityConfig;
 
+import org.card.application.entity.UserDetail;
+import org.card.application.entity.UserToken;
+import org.card.application.service.impl.UserServiceImpl;
+import org.card.application.service.impl.UserTokenServiceImpl;
+import org.card.application.util.TokenCookie;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
 
 @Component
 public class SavedRequestAwareSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private RequestCache requestCache = new HttpSessionRequestCache();
+    @Autowired
+    UserTokenServiceImpl userTokenServiceImpl;
+    @Autowired
+    UserServiceImpl userServiceImpl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        SavedRequest savedRequest
-                = requestCache.getRequest(request, response);
 
-        if (savedRequest == null) {
-            clearAuthenticationAttributes(request);
-            return;
-        }
-        String targetUrlParam = getTargetUrlParameter();
-        if (isAlwaysUseDefaultTargetUrl()
-                || (targetUrlParam != null
-                && StringUtils.hasText(request.getParameter(targetUrlParam)))) {
-            requestCache.removeRequest(request, response);
-            clearAuthenticationAttributes(request);
-            return;
-        }
+        String username = ((UserDetail) authentication.getPrincipal()).getUsername();
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[50];
+        random.nextBytes(bytes);
+        String token = bytes.toString();
+        UserToken userToken = new UserToken(0, token, LocalDateTime.now().plusMinutes(30l), userServiceImpl.findUserByLogin(username));
+        userTokenServiceImpl.update(userToken);
+        response.addCookie(TokenCookie.createTokenCookie(token));
 
-        clearAuthenticationAttributes(request);
-    }
-
-    public void setRequestCache(RequestCache requestCache) {
-        this.requestCache = requestCache;
     }
 }
+
+
+//    private RequestCache requestCache = new HttpSessionRequestCache();
+//        SavedRequest savedRequest
+//                = requestCache.getRequest(request, response);
+//
+//        if (savedRequest == null) {
+//            clearAuthenticationAttributes(request);
+//            return;
+//        }
+//        String targetUrlParam = getTargetUrlParameter();
+//        if (isAlwaysUseDefaultTargetUrl()
+//                || (targetUrlParam != null
+//                && StringUtils.hasText(request.getParameter(targetUrlParam)))) {
+//            requestCache.removeRequest(request, response);
+//            clearAuthenticationAttributes(request);
+//            return;
+//        }
+//        clearAuthenticationAttributes(request);
+
+
+//    public void setRequestCache(RequestCache requestCache) {
+//        this.requestCache = requestCache;
+//    }

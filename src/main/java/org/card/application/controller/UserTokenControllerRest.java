@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/userToken")
+@RequestMapping("/ca/userToken")
 public class UserTokenControllerRest {
 
     @Autowired
