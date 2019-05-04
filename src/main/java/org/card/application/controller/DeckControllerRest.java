@@ -36,7 +36,7 @@ public class DeckControllerRest {
 
     @PutMapping
     public Deck update (@RequestBody Deck deck){
-        return deckService.update(deck);
+        return deckService.saveOrUpdate(deck);
     }
 
     @DeleteMapping("/{id}")

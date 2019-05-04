@@ -6,6 +6,7 @@ import org.card.application.service.BaseService;
 import org.card.application.service.UserTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,13 +26,13 @@ public class UserTokenServiceImpl implements BaseService<UserToken, Long>, UserT
         return userTokenRepository.findAll();
     }
 
+    @Transactional
     @Override
-    public UserToken save(UserToken entity) {
-        return userTokenRepository.save(entity);
-    }
-
-    @Override
-    public UserToken update(UserToken entity) {
+    public UserToken saveOrUpdate(UserToken entity) {
+        UserToken userToken = userTokenRepository.findUserTokenByUserId(entity.getUser().getId()).orElse(new UserToken());
+        if (userToken.getId() != 0) {
+            entity.setId(userToken.getId());
+        }
         return userTokenRepository.save(entity);
     }
 

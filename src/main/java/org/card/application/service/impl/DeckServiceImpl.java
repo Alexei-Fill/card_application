@@ -26,12 +26,7 @@ public class DeckServiceImpl implements BaseService<Deck, Long>, DeckService {
     }
 
     @Override
-    public Deck save(Deck entity) {
-        return deckRepository.save(entity);
-    }
-
-    @Override
-    public Deck update(Deck entity) {
+    public Deck saveOrUpdate(Deck entity) {
         return deckRepository.save(entity);
     }
 

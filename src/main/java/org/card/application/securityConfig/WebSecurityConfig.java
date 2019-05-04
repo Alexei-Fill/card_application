@@ -2,6 +2,7 @@ package org.card.application.securityConfig;
 
 import org.card.application.service.UserService;
 import org.card.application.service.impl.UserServiceImpl;
+import org.card.application.service.impl.UserTokenServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserServiceImpl userServiceImpl;
     @Autowired
+    UserTokenServiceImpl userTokenServiceImpl;
+    @Autowired
     RestAuthEntryPoint restAuthEntryPoint;
     @Autowired
     SavedRequestAwareSuccessHandler mySuccessHandler;
@@ -41,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        TokenAuthenticationFilter tokenAuthenticationFilter = new TokenAuthenticationFilter();
+        TokenAuthenticationFilter tokenAuthenticationFilter = new TokenAuthenticationFilter(userTokenServiceImpl);
         http
                 .addFilterBefore(customUsernamePasswordAuthenticationFilter(), CustomerUsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)

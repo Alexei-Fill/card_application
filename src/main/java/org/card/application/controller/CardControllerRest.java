@@ -31,7 +31,7 @@ public class CardControllerRest {
 
     @PutMapping
     public Card update (@RequestBody Card card){
-        return cardService.update(card);
+        return cardService.saveOrUpdate(card);
     }
 
     @DeleteMapping("/{id}")

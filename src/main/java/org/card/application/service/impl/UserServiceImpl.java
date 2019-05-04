@@ -32,13 +32,10 @@ public class UserServiceImpl implements BaseService<User, Long>, UserService, Us
     }
 
     @Override
-    public User save(User entity) {
-        entity.setRole(ROLE_USER);
-        return userRepository.save(entity);
-    }
-
-    @Override
-    public User update(User entity) {
+    public User saveOrUpdate(User entity) {
+        if (entity.getId() == 0){
+            entity.setRole(ROLE_USER);
+        }
         return userRepository.save(entity);
     }
 

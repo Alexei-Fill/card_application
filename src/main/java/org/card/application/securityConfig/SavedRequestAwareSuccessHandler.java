@@ -34,32 +34,8 @@ public class SavedRequestAwareSuccessHandler extends SimpleUrlAuthenticationSucc
         random.nextBytes(bytes);
         String token = bytes.toString();
         UserToken userToken = new UserToken(0, token, LocalDateTime.now().plusMinutes(30l), userServiceImpl.findUserByLogin(username));
-        userTokenServiceImpl.update(userToken);
+        userTokenServiceImpl.saveOrUpdate(userToken);
         response.addCookie(TokenCookie.createTokenCookie(token));
 
     }
 }
-
-
-//    private RequestCache requestCache = new HttpSessionRequestCache();
-//        SavedRequest savedRequest
-//                = requestCache.getRequest(request, response);
-//
-//        if (savedRequest == null) {
-//            clearAuthenticationAttributes(request);
-//            return;
-//        }
-//        String targetUrlParam = getTargetUrlParameter();
-//        if (isAlwaysUseDefaultTargetUrl()
-//                || (targetUrlParam != null
-//                && StringUtils.hasText(request.getParameter(targetUrlParam)))) {
-//            requestCache.removeRequest(request, response);
-//            clearAuthenticationAttributes(request);
-//            return;
-//        }
-//        clearAuthenticationAttributes(request);
-
-
-//    public void setRequestCache(RequestCache requestCache) {
-//        this.requestCache = requestCache;
-//    }

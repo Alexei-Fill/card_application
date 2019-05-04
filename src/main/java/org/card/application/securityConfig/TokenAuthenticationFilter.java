@@ -4,6 +4,7 @@ import org.card.application.entity.UserToken;
 import org.card.application.service.impl.UserTokenServiceImpl;
 import org.card.application.util.TokenCookie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.NotSupportedException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -24,8 +26,15 @@ import static org.card.application.util.Const.*;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
     private UserTokenServiceImpl userTokenService;
+
+    public TokenAuthenticationFilter() throws NotSupportedException {
+        throw new NotSupportedException();
+    }
+
+    public TokenAuthenticationFilter(UserTokenServiceImpl userTokenService) {
+        this.userTokenService = userTokenService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {

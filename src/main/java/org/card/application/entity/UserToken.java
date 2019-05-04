@@ -3,6 +3,7 @@ package org.card.application.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "user_token")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserToken implements Serializable {
     @Id
     @Column(name = "user_token_id")

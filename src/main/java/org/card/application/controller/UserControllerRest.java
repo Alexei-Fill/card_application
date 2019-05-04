@@ -35,7 +35,7 @@ public class UserControllerRest {
 
     @PutMapping
     public User update (@RequestBody User user){
-        return userService.update(user);
+        return userService.saveOrUpdate(user);
     }
 
     @DeleteMapping("/{id}")

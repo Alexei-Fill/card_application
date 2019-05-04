@@ -9,9 +9,7 @@ public interface BaseService<T extends Serializable, S extends Number> {
 
     List<T> findAll();
 
-    T save (T entity);
-
-    T update (T entity);
+    T saveOrUpdate(T entity);
 
     void delete (S id);
 }

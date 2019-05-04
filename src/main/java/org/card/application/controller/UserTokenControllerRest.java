@@ -31,7 +31,7 @@ public class UserTokenControllerRest {
 
     @PutMapping
     public UserToken update (@RequestBody UserToken userToken){
-        return userTokenService.update(userToken);
+        return userTokenService.saveOrUpdate(userToken);
     }
 
     @DeleteMapping("/{id}")

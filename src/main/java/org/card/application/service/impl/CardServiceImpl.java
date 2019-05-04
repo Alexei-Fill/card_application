@@ -26,12 +26,7 @@ public class CardServiceImpl implements BaseService<Card, Long>, CardService {
     }
 
     @Override
-    public Card save(Card entity) {
-        return cardRepository.save(entity);
-    }
-
-    @Override
-    public Card update(Card entity) {
+    public Card saveOrUpdate(Card entity) {
         return cardRepository.save(entity);
     }
 
