@@ -1,7 +1,7 @@
 package org.card.application.service;
 
-import org.card.application.entity.User;
+import org.card.application.entity.ApplicationUser;
 
 public interface UserService {
-    User findUserByLogin(String login);
+    ApplicationUser findUserByLogin(String login);
 }

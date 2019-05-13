@@ -1,15 +1,16 @@
 package org.card.application.securityConfig;
 
-import org.card.application.entity.UserToken;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.impl.DefaultClaims;
+import org.card.application.service.impl.UserServiceImpl;
 import org.card.application.service.impl.UserTokenServiceImpl;
 import org.card.application.util.TokenCookie;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
@@ -20,24 +21,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.NotSupportedException;
 import java.io.IOException;
-import java.util.Arrays;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Date;
 
 import static org.card.application.util.Const.*;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private UserTokenServiceImpl userTokenService;
+    private UserServiceImpl userService;
 
     public TokenAuthenticationFilter() throws NotSupportedException {
         throw new NotSupportedException();
     }
 
-    public TokenAuthenticationFilter(UserTokenServiceImpl userTokenService) {
-        this.userTokenService = userTokenService;
+    public TokenAuthenticationFilter(UserServiceImpl userService) {
+        this.userService = userService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        String key = "topSecretKey";
         Cookie cookie = WebUtils.getCookie(httpServletRequest, "x-auth-token");
         String accessToken = null;
         if (cookie != null) {
@@ -45,20 +49,43 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             httpServletResponse.addCookie(TokenCookie.createTokenCookie(accessToken));
         }
         if (accessToken != null ) {
-            UserToken userTokenEntity = userTokenService.findUserTokenByToken(accessToken);
+            DefaultClaims claims;
+            try {
+                claims = (DefaultClaims) Jwts.parser().setSigningKey(key).parse(accessToken).getBody();
+            } catch (Exception ex) {
+                throw new AuthenticationServiceException("Token corrupted");
+            }
+            if (claims.get("token_expiration_date", String.class) == null)
+                throw new AuthenticationServiceException("Invalid token");
+            LocalDateTime expiredDate = LocalDateTime.parse(claims.get("token_expiration_date", String.class));
+            if (expiredDate.isAfter(LocalDateTime.now())) {
+            SecurityContextHolder.getContext().setAuthentication(buildFullTokenAuthentication(claims));
+            }
+            else {
+                throw new AuthenticationServiceException("Token expired date error");
+            }
+        }
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
+    }
 
+    private UsernamePasswordAuthenticationToken buildFullTokenAuthentication(DefaultClaims claims) {
+        UserDetails userDetails =  userService.loadUserByUsername(claims.get("username", String.class));
+        if (userDetails.isEnabled()) {
+            Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
             final User user = new User(
-                    userTokenEntity.getUser().getLogin(),
-                    userTokenEntity.getUser().getPassword(),
+                    userDetails.getUsername(),
+                    userDetails.getPassword(),
                     ENABLED,
                     ACCOUNT_NON_EXPIRED,
                     CREDENTIALS_NON_EXPIRED,
                     ACCOUNT_NON_LOCKED,
-                    Arrays.asList(new SimpleGrantedAuthority(userTokenEntity.getUser().getRole().toString())));
+                    userDetails.getAuthorities());
             final UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            return authentication;
+        } else {
+            throw new AuthenticationServiceException("ApplicationUser disabled");
         }
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

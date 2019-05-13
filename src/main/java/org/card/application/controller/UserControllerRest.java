@@ -1,6 +1,6 @@
 package org.card.application.controller;
 
-import org.card.application.entity.User;
+import org.card.application.entity.ApplicationUser;
 import org.card.application.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -18,24 +18,24 @@ public class UserControllerRest {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
-    public List<User> findAll(){
+    public List<ApplicationUser> findAll(){
         return userService.findAll();
     }
 
     @PostMapping("/search")
-    public User findByLogin(@RequestBody String login) {
+    public ApplicationUser findByLogin(@RequestBody String login) {
         return userService.findUserByLogin(login);
     }
 
     @Secured(value = "isAnonymous()")
     @PostMapping
-    public User save (@RequestBody User user){
-        return userService.save(user);
+    public ApplicationUser save (@RequestBody ApplicationUser applicationUser){
+        return userService.saveOrUpdate(applicationUser);
     }
 
     @PutMapping
-    public User update (@RequestBody User user){
-        return userService.saveOrUpdate(user);
+    public ApplicationUser update (@RequestBody ApplicationUser applicationUser){
+        return userService.saveOrUpdate(applicationUser);
     }
 
     @DeleteMapping("/{id}")

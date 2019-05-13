@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,5 +29,5 @@ public class UserToken implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private ApplicationUser applicationUser;
 }

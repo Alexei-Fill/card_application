@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
-public class User implements Serializable {
+public class ApplicationUser implements Serializable {
 
     @Id
     @Column(name = "user_id")

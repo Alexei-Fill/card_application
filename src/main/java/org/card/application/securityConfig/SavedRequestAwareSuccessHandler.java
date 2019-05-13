@@ -2,6 +2,7 @@ package org.card.application.securityConfig;
 
 import org.card.application.entity.UserDetail;
 import org.card.application.entity.UserToken;
+import org.card.application.service.impl.GetTokenService;
 import org.card.application.service.impl.UserServiceImpl;
 import org.card.application.service.impl.UserTokenServiceImpl;
 import org.card.application.util.TokenCookie;
@@ -24,18 +25,23 @@ public class SavedRequestAwareSuccessHandler extends SimpleUrlAuthenticationSucc
     UserTokenServiceImpl userTokenServiceImpl;
     @Autowired
     UserServiceImpl userServiceImpl;
+    @Autowired
+    GetTokenService getTokenService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         String username = ((UserDetail) authentication.getPrincipal()).getUsername();
-        SecureRandom random = new SecureRandom();
-        byte bytes[] = new byte[50];
-        random.nextBytes(bytes);
-        String token = bytes.toString();
+//        SecureRandom random = new SecureRandom();
+//        byte bytes[] = new byte[50];
+//        random.nextBytes(bytes);
+//        String token = bytes.toString();
+        String token = getTokenService.getToken(username);
         UserToken userToken = new UserToken(0, token, LocalDateTime.now().plusMinutes(30l), userServiceImpl.findUserByLogin(username));
-        userTokenServiceImpl.saveOrUpdate(userToken);
+//        userTokenServiceImpl.saveOrUpdate(userToken);
+//        System.out.println(token);
         response.addCookie(TokenCookie.createTokenCookie(token));
-
     }
+
+
 }

@@ -31,7 +31,7 @@ public class DeckControllerRest {
 
     @PostMapping
     public Deck save (@RequestBody Deck deck){
-        return deckService.save(deck);
+        return deckService.saveOrUpdate(deck);
     }
 
     @PutMapping

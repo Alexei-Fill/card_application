@@ -10,26 +10,26 @@ import java.util.List;
 
 public class UserDetail implements UserDetails {
 
-    User user;
-    public UserDetail(User user) {
-        this.user = user;
+    ApplicationUser applicationUser;
+    public UserDetail(ApplicationUser applicationUser) {
+        this.applicationUser = applicationUser;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
-        grantedAuthorityList.add(new SimpleGrantedAuthority(user.getRole().toString()));
+        grantedAuthorityList.add(new SimpleGrantedAuthority(applicationUser.getRole().toString()));
         return grantedAuthorityList;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return applicationUser.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getLogin();
+        return applicationUser.getLogin();
     }
 
     @Override

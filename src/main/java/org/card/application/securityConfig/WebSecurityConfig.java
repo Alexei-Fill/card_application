@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        TokenAuthenticationFilter tokenAuthenticationFilter = new TokenAuthenticationFilter(userTokenServiceImpl);
+        TokenAuthenticationFilter tokenAuthenticationFilter = new TokenAuthenticationFilter(userServiceImpl);
         http
                 .addFilterBefore(customUsernamePasswordAuthenticationFilter(), CustomerUsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)

@@ -1,6 +1,6 @@
 package org.card.application.service.impl;
 
-import org.card.application.entity.User;
+import org.card.application.entity.ApplicationUser;
 import org.card.application.entity.UserDetail;
 import org.card.application.repository.UserRepository;
 import org.card.application.service.BaseService;
@@ -16,23 +16,23 @@ import java.util.List;
 import static org.card.application.entity.cardEnum.UserRole.ROLE_USER;
 
 @Service
-public class UserServiceImpl implements BaseService<User, Long>, UserService, UserDetailsService {
+public class UserServiceImpl implements BaseService<ApplicationUser, Long>, UserService, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public User findById(Long id) {
+    public ApplicationUser findById(Long id) {
         return userRepository.getOne(id);
     }
 
     @Override
-    public List<User> findAll() {
+    public List<ApplicationUser> findAll() {
         return userRepository.findAll();
     }
 
     @Override
-    public User saveOrUpdate(User entity) {
+    public ApplicationUser saveOrUpdate(ApplicationUser entity) {
         if (entity.getId() == 0){
             entity.setRole(ROLE_USER);
         }
@@ -46,18 +46,18 @@ public class UserServiceImpl implements BaseService<User, Long>, UserService, Us
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = null;
+        ApplicationUser applicationUser = null;
         if (username != null && !username.isEmpty()) {
-            user = userRepository.findUserByLogin(username).get();
+            applicationUser = userRepository.findUserByLogin(username).get();
         }
-        if (user != null)
-            return new UserDetail(user);
+        if (applicationUser != null)
+            return new UserDetail(applicationUser);
         else
-            throw  new UsernameNotFoundException("User not found :" + username);
+            throw  new UsernameNotFoundException("ApplicationUser not found :" + username);
     }
 
     @Override
-    public User findUserByLogin(String login) {
+    public ApplicationUser findUserByLogin(String login) {
         return userRepository.findUserByLogin(login).get();
     }
 }

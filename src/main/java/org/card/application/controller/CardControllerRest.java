@@ -26,7 +26,7 @@ public class CardControllerRest {
 
     @PostMapping
     public Card save (@RequestBody Card card){
-        return cardService.save(card);
+        return cardService.saveOrUpdate(card);
     }
 
     @PutMapping

@@ -29,11 +29,12 @@ public class UserTokenServiceImpl implements BaseService<UserToken, Long>, UserT
     @Transactional
     @Override
     public UserToken saveOrUpdate(UserToken entity) {
-        UserToken userToken = userTokenRepository.findUserTokenByUserId(entity.getUser().getId()).orElse(new UserToken());
-        if (userToken.getId() != 0) {
-            entity.setId(userToken.getId());
-        }
-        return userTokenRepository.save(entity);
+//        UserToken userToken = userTokenRepository.findUserTokenByUserId(entity.getApplicationUser().getId()).orElse(new UserToken());
+//        if (userToken.getId() != 0) {
+//            entity.setId(userToken.getId());
+//        }
+//        return userTokenRepository.save(entity);
+        return null;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class UserTokenControllerRest {
 
     @PostMapping
     public UserToken save (@RequestBody UserToken userToken){
-        return userTokenService.save(userToken);
+        return userTokenService.saveOrUpdate(userToken);
     }
 
     @PutMapping
