@@ -10,7 +10,7 @@ public class TokenCookie {
 
     public static Cookie createTokenCookie(String accessToken, int maxAge) {
         Cookie tokenCookie = new Cookie("x-auth-token", accessToken);
-        tokenCookie.setDomain("localhost");
+        tokenCookie.setDomain("");
         tokenCookie.setPath("/");
         tokenCookie.setMaxAge(maxAge);
         return tokenCookie;
