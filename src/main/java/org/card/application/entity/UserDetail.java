@@ -22,6 +22,10 @@ public class UserDetail implements UserDetails {
         return grantedAuthorityList;
     }
 
+    public ApplicationUser getUser(){
+        return applicationUser;
+    }
+
     @Override
     public String getPassword() {
         return applicationUser.getPassword();

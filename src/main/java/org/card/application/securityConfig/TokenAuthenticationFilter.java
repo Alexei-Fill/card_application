@@ -2,6 +2,7 @@ package org.card.application.securityConfig;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.DefaultClaims;
+import org.card.application.entity.UserDetail;
 import org.card.application.service.impl.UserServiceImpl;
 import org.card.application.service.impl.UserTokenServiceImpl;
 import org.card.application.util.TokenCookie;
@@ -69,8 +70,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private UsernamePasswordAuthenticationToken buildFullTokenAuthentication(DefaultClaims claims) {
-        UserDetails userDetails =  userService.loadUserByUsername(claims.get("username", String.class));
-        if (userDetails.isEnabled()) {
+        UserDetail userDetails = (UserDetail) userService.loadUserByUsername(claims.get("username", String.class));
+        if (userDetails.isEnabled() && userDetails.getUser().getId() == claims.get("userId", Long.class)) {
             Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
             final User user = new User(
                     userDetails.getUsername(),
