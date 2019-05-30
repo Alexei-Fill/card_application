@@ -4,14 +4,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.card.application.entity.UserDetail;
 import org.card.application.service.impl.UserServiceImpl;
-import org.card.application.service.impl.UserTokenServiceImpl;
 import org.card.application.util.TokenCookie;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
@@ -24,7 +22,6 @@ import javax.transaction.NotSupportedException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 
 import static org.card.application.util.Const.*;
 

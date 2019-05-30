@@ -6,11 +6,7 @@ import org.card.application.entity.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,9 +25,8 @@ public class GetTokenService {
         Map<String, Object> tokenData = new HashMap<>();
         tokenData.put("userId", applicationUser.getId());
         tokenData.put("username", applicationUser.getLogin());
-        tokenData.put("token_expiration_date", LocalDateTime.now().plusMinutes(30).toString());
+        tokenData.put("token_expiration_date", LocalDateTime.now().plusMinutes(03).toString());
         JwtBuilder jwtBuilder = Jwts.builder();
-//        jwtBuilder.setExpiration(new Date(String.valueOf(Date.from(Instant.from(LocalDate.now())).toInstant())));
         jwtBuilder.setClaims(tokenData);
         String key = "topSecretKey";
         String token = jwtBuilder.signWith(HS512, key).compact();

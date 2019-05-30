@@ -1,8 +1,6 @@
 package org.card.application.securityConfig;
 
-import org.card.application.service.UserService;
 import org.card.application.service.impl.UserServiceImpl;
-import org.card.application.service.impl.UserTokenServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +25,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserServiceImpl userServiceImpl;
-    @Autowired
-    UserTokenServiceImpl userTokenServiceImpl;
     @Autowired
     RestAuthEntryPoint restAuthEntryPoint;
     @Autowired
@@ -55,13 +51,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(restAuthEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login**").anonymous()
+                .antMatchers("/login").anonymous()
                 .antMatchers("/logout").permitAll()
+                .antMatchers("/ca/user").permitAll()
                 .antMatchers("/ca/**").hasAnyRole("ADMIN", "USER")
                 .and()
                 .formLogin().loginProcessingUrl("/login").passwordParameter("password").usernameParameter("username")
                 .and()
-                .logout()
+                .logout().logoutUrl("/logout")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
