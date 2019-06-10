@@ -25,7 +25,6 @@ public class SavedRequestAwareSuccessHandler extends SimpleUrlAuthenticationSucc
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
         String username = ((UserDetail) authentication.getPrincipal()).getUsername();
         String token = getTokenService.getToken(username);
         response.addCookie(TokenCookie.createTokenCookie(token));

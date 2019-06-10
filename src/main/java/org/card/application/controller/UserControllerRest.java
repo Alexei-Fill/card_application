@@ -32,7 +32,7 @@ public class UserControllerRest {
     }
 
 //    @Secured(value = "isAnonymous()")
-//    @PreAuthorize(value = "isAnonymous()")
+//    @PreAuthorize(value = "permitAll()")
     @PostMapping
     public ApplicationUser save (@RequestBody ApplicationUser applicationUser){
         ApplicationUser savedUser =  userService.saveOrUpdate(applicationUser);

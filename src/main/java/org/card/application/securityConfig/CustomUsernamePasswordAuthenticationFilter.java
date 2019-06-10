@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 
 import static org.springframework.http.HttpMethod.POST;
 
-public class CustomerUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class CustomUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
@@ -36,12 +36,14 @@ public class CustomerUsernamePasswordAuthenticationFilter extends UsernamePasswo
 
     private AuthenticationData getLoginRequest(HttpServletRequest request) {
         AuthenticationData authenticationData = null;
-             try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
 
             Gson gson = new Gson();
             authenticationData = gson.fromJson(reader, AuthenticationData.class);
-             } catch (IOException e) {
-             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(authenticationData);
         if (authenticationData == null) {
             authenticationData = new AuthenticationData();
         }

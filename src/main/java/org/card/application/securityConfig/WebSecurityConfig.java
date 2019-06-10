@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         TokenAuthenticationFilter tokenAuthenticationFilter = new TokenAuthenticationFilter(userServiceImpl);
         http
-                .addFilterBefore(customUsernamePasswordAuthenticationFilter(), CustomerUsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customUsernamePasswordAuthenticationFilter(), CustomUsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
                 .csrf().disable()
                 .exceptionHandling()
@@ -69,9 +69,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CustomerUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter()
+    public CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter()
             throws Exception {
-        CustomerUsernamePasswordAuthenticationFilter customUsernamePasswordAuthFilter = new CustomerUsernamePasswordAuthenticationFilter();
+        CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthFilter = new CustomUsernamePasswordAuthenticationFilter();
         customUsernamePasswordAuthFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
         customUsernamePasswordAuthFilter.setAuthenticationSuccessHandler(mySuccessHandler);
         customUsernamePasswordAuthFilter.setAuthenticationFailureHandler(myFailureHandler);
