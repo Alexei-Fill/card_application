@@ -1,5 +1,6 @@
 package org.card.application.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.card.application.entity.cardEnum.DeckType;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "deck")
 @Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Deck implements Serializable {
 
     @Id
@@ -21,7 +23,7 @@ public class Deck implements Serializable {
     @Column(name = "deck_name")
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "card_deck_id")
     private List<Card> cards;
 }

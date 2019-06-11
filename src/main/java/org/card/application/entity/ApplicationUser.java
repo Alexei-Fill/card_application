@@ -35,7 +35,7 @@ public class ApplicationUser implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_deck_id")
     private List<Deck> decks;
 }

@@ -21,13 +21,15 @@ public class DeckControllerRest {
 
     @GetMapping("/{id}")
     public Deck findById(@PathVariable("id") long id){
-        return deckService.findById(id);
+        Deck deck = deckService.findById(id);
+        System.out.println(deck);
+        return deck;
     }
 
-    @GetMapping("/{searchTerm}")
-    public List<Deck> findBySearchTerm(@PathVariable("searchTerm") String searchTerm){
-        return deckService.findBySearchTerm(searchTerm);
-    }
+//    @GetMapping("/{searchTerm}")
+//    public List<Deck> findBySearchTerm(@PathVariable("searchTerm") String searchTerm){
+//        return deckService.findBySearchTerm(searchTerm);
+//    }
 
     @PostMapping
     public Deck save (@RequestBody Deck deck){
